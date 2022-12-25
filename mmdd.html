@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- <script src="jquery-3.6.1.min.js"></script> -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.1/jquery.min.js"></script>
+    <title>Document</title>
+</head>
+<body>
+    <div class="form-group form-focus">
+        <input id="text"type="text" value="00-00">
+        <!-- <input name="OnTimeGap" type="text" class="form-control floating" v-model="data.OnTimeGap">
+        <label class="focus-label">점등 시간편차 (-60~60)</label> -->
+    </div>
+    <script>
+        $("#text").on("propertychange change keyup paste input", function() {
+            let currentVal = $(this).val();
+            let currentVal_type = Number($(this).val());
+            // 문자열이 5글자 이상 갈 경우 존재하지않음
+            if ( currentVal.length < 6 ) {
+                // 문자열이 4글자인데 숫자만 있을때 가운데에 "-"를 넣어줌
+                if( currentVal.length == 4 ) {
+                    //문자열이면
+                    if ( isNaN(currentVal_type) == true ) {
+                        return;
+                    }
+                    //숫자면 
+                    else {
+                        currentVal = $(this).val( currentVal.slice(0,2) + "-" + currentVal.slice(2,4) );
+                        
+                    }
+                }
+                // 5글자가 되었을때 검사
+                if ( currentVal.length == 5 ) {
+                    // 가운데 문자가 "-"가 아닐경우 (처리)
+                    if( currentVal[2] != "-" ) {
+                        $(this).val("");
+                    }
+                    // 가운데 문자 외 나머지 문자들 (처리)
+                    for ( let num = 0; num < 5; num++ ){
+                        if ( num == 2 ) {
+                            continue
+                        }
+                        if ( isNaN(Number(currentVal[num])) == true ) {
+                            $(this).val("");
+                        }
+                    }  
+                }
+            }
+            else {
+                $(this).val(currentVal.substring(0, currentVal.length - 1));
+            }
+        });
+    </script>
+</body>
+</html>
